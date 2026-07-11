@@ -186,6 +186,12 @@ ZB_CHANNEL: dict[int, str] = {
     2: "custom",  # custom for 06M
 }
 
+SEL_FW_CHANNEL: dict[int, str] = {
+    0: "any",
+    1: "release",
+    2: "dev",
+}
+
 
 class Events(Enum):
     API2_WIFISCANSTATUS = 0

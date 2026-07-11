@@ -104,3 +104,28 @@ async def test_settings_ble_proxy(aresponses: ResponsesMockServer) -> None:
         query = req_get.query
         assert int(query["action"]) == 4  # Actions.API_CMD
         assert int(query["cmd"]) == 3  # Commands.CMD_ESP_RES
+
+
+async def test_settings_fw_channel(aresponses: ResponsesMockServer) -> None:
+    """Test setting firmware channel."""
+    aresponses.add(
+        host,
+        "/settings/saveParams",
+        "POST",
+        aresponses.Response(
+            status=200,
+            headers={"Content-Type": "application/json"},
+            text="ok",
+        ),
+    )
+    async with ClientSession() as session:
+        client = Api2(host, session=session)
+        res = await client.set_fw_channel(1)
+        assert res
+
+        req_post = aresponses.history[0][0]
+        assert req_post.content_type == "application/x-www-form-urlencoded"
+        body = urllib.parse.parse_qs(await req_post.text())
+        assert int(body["pageId"][0]) == 7  # Pages.API2_PAGE_SETTINGS_OTA
+        assert int(body["fw_ch"][0]) == 1
+        assert bool(body["ha"][0]) is True

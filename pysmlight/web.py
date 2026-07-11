@@ -14,6 +14,7 @@ from .const import (
     FW_URL,
     MR_DEVICE_RADIO_MAP,
     PARAM_LIST,
+    SEL_FW_CHANNEL,
     Actions,
     Commands,
     Devices,
@@ -395,6 +396,27 @@ class Api2(webClient):
         if success:
             await self.cmds.reboot()
         return success
+
+    async def set_fw_channel(self, channel: int | str) -> bool:
+        """Set firmware channel."""
+        if isinstance(channel, str):
+            for k, v in SEL_FW_CHANNEL.items():
+                if v == channel:
+                    channel = k
+                    break
+            else:
+                try:
+                    channel = int(channel)
+                except ValueError as err:
+                    raise ValueError(f"Invalid firmware channel: {channel}") from err
+
+        params = {
+            "pageId": Pages.API2_PAGE_SETTINGS_OTA.value,
+            "fw_ch": channel,
+            "ha": True,
+        }
+        res = await self.post(params)
+        return res
 
     async def scan_wifi(self, callback: Callable) -> Callable[[], None]:
         """Initiate scan of wifi networks.

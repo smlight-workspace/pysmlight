@@ -67,6 +67,7 @@ class Info(DataClassDictMixin):
     model: str | None = None
     ram_total: int | None = None
     psram_total: int | None = None
+    sel_fw_channel: str | None = None
     sw_version: str | None = None
     u_device: bool | None = None
     wifi_mode: int | None = None  # enum (off, client, AP etc)

@@ -11,6 +11,7 @@
     "coord_mode": 0,
     "device_ip": "192.168.1.63",
     "fw_channel": "dev",
+    "sel_fw_channel": "any",
     "MAC": "DD:88:FC:AA:EE:FF",
     "model": "SLZB-ULTIMA3",
     "u_device": true,
